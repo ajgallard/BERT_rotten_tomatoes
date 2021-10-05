@@ -1,0 +1,77 @@
+--- # index 0
+colab:
+  model_name: distilbert-base-uncased
+  batch_size: 32
+  content_name: review_content
+  label_name: labels
+  num_labels: 2
+  max_seq_length: 80
+  filepath: >-
+    https://media.githubusercontent.com/media/ajgallard/BERT_rotten_tomatoes/main/data/
+  csv_names:
+    train: train.csv
+    val: val.csv
+    test: test.csv
+
+data:
+  model_name: distilbert-base-uncased
+  batch_size: 32
+  content_name: review_content
+  label_name: labels
+  num_labels: 2
+  max_seq_length: 80
+  filepath: >-
+    data/
+  csv_names:
+    train: train.csv
+    val: val.csv
+    test: test.csv
+...
+--- # index 1
+model:
+  model_name: distilbert-base-uncased
+  num_labels: 2
+...
+--- # index 2
+classifier:
+  learning_rate: 3.0e-5
+...
+--- # index 3
+colab_trainer:
+  max_epochs: 100
+  progress_bar_refresh_rate: 20
+  gpus: 1
+  precision: 16
+  logger: True
+  log_every_n_steps: 1
+  default_root_dir: >-
+    /content/drive/MyDrive/ColabLogs
+
+local_trainer:
+  max_epochs: 5
+  progress_bar_refresh_rate: 1
+  gpus: 1
+  precision: 16
+  logger: True
+  log_every_n_steps: 1
+
+test_run:
+  max_epochs: 2
+  limit_train_batches: 100
+  limit_val_batches: 100
+  progress_bar_refresh_rate: 1
+  gpus: 1
+  precision: 16
+  logger: True
+  log_every_n_steps: 1
+...
+--- # index 4
+colab_save_dir: >-
+  /content/drive/MyDrive/ColabModels/dBERT_ep100_rotten_tomatoes.pth
+colab_tr_save: >-
+  /content/drive/MyDrive/ColabModels/dBERT_testrun_rotten_tomatoes.pth
+local_save_dir: >-
+  saved_models/dBERT_ep30_rotten_tomatoes.pth
+local_tr_save: >-
+  saved_models/dBERT_testrun_rotten_tomatoes.pth
+...
