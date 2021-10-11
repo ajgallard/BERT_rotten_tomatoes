@@ -30,6 +30,7 @@ class DistilBERT(pl.LightningModule):
         model = DBSC.from_pretrained(self.model_name,
                                      num_labels=self.num_labels)
         self.model = model
+
     """
     LIGHTNING CLASSIFIER SECTION
     """
@@ -105,11 +106,6 @@ class DistilBERT(pl.LightningModule):
         outputs = self.model(input_ids=input_ids,
                              attention_mask=attention_mask)
 
-        # loss
-        criterion = nn.CrossEntropyLoss()
-        loss = criterion(outputs.logits, labels)
-
-        # accuracy
         preds = []
         for i in range(len(outputs.logits)):
             label_result = outputs.logits[i]
@@ -119,8 +115,24 @@ class DistilBERT(pl.LightningModule):
                 preds.append(1)
 
         preds = torch.tensor(preds)
-        metric = torchmetrics.Accuracy()
-        acc = metric(preds.cpu(), labels.cpu())
-        self.log("Test Loss", loss, prog_bar=False, on_epoch=True)
-        self.log("Test Accuracy", acc, prog_bar=False, on_epoch=True)
-        return dict(loss=loss, train_acc=acc)
+        return [preds.cpu(), labels.cpu()]
+    
+    def predict_step(self, batch, batch_idx):
+
+        input_ids = batch['ids']
+        attention_mask = batch['mask']
+        labels = batch['labels']
+        
+        outputs = self.model(input_ids=input_ids,
+                             attention_mask=attention_mask)
+
+        preds = []
+        for i in range(len(outputs.logits)):
+            label_result = outputs.logits[i]
+            if label_result[0] > label_result[1]:
+                preds.append(0)
+            else:
+                preds.append(1)
+
+        preds = torch.tensor(preds)
+        return [preds.cpu(), labels.cpu()]  # return predictions & labels for metrics utils
