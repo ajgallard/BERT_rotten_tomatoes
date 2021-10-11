@@ -7,7 +7,7 @@ colab:
   num_labels: 2
   max_seq_length: 80
   filepath: >-
-    https://media.githubusercontent.com/media/ajgallard/BERT_rotten_tomatoes/main/data/
+    https://raw.githubusercontent.com/ajgallard/BERT_rotten_tomatoes/main/data/
   csv_names:
     train: train.csv
     val: val.csv
@@ -44,8 +44,6 @@ colab_trainer:
   precision: 16
   logger: True
   log_every_n_steps: 1
-  default_root_dir: >-
-    /content/drive/MyDrive/ColabLogs
 
 local_trainer:
   max_epochs: 5
@@ -67,11 +65,11 @@ test_run:
 ...
 --- # index 4
 colab_save_dir: >-
-  /content/drive/MyDrive/ColabModels/dBERT_ep100_rotten_tomatoes.pth
+  /content/drive/MyDrive/ColabModels/dBERT_colab_rotten_tomatoes.pth
 colab_tr_save: >-
   /content/drive/MyDrive/ColabModels/dBERT_testrun_rotten_tomatoes.pth
 local_save_dir: >-
-  saved_models/dBERT_ep30_rotten_tomatoes.pth
+  saved_models/dBERT_local_rotten_tomatoes.pth
 local_tr_save: >-
   saved_models/dBERT_testrun_rotten_tomatoes.pth
 ...
