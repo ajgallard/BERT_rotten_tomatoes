@@ -121,3 +121,10 @@ class BERTDataModule(pl.LightningDataModule):
                           batch_size=self.batch_size,
                           shuffle=False,
                           num_workers=self.num_workers)
+
+    def predict_dataloader(self):
+        print("Building Prediction Dataloader...")
+        return DataLoader(dataset=self.val_dataset,
+                          batch_size=self.batch_size,
+                          shuffle=False,
+                          num_workers=self.num_workers)
