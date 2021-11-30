@@ -1,5 +1,4 @@
 mlflow
-pytorch
 pytorch_lightning==1.4.8
 torchmetrics
 transformers
