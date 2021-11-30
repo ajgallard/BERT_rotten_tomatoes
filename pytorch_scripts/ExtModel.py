@@ -36,7 +36,7 @@ class DExt(pl.LightningModule):
         self.model.classifier = nn.Sequential(
             nn.Linear(768, 512), nn.BatchNorm1d(512), nn.ReLU(),
             nn.Dropout(0.2),
-            nn.Linear(512, 256), nn.BatchNorm1d(512), nn.ReLU(),
+            nn.Linear(512, 256), nn.BatchNorm1d(256), nn.ReLU(),
             nn.Dropout(0.2),
             nn.Linear(256, self.num_labels))
 
