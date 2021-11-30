@@ -11,13 +11,15 @@ from torch.optim import AdamW
 Callbacks
 """
 early_stopping = callbacks.EarlyStopping(monitor="Val Accuracy", patience=5, verbose=False, mode="max")
+checkpoints = callbacks.ModelCheckpoint(monitor='Val Accuracy', save_top_k=1, filename='best_ckpt-epoch{epoch:02d}')
+callbacks = [early_stopping, checkpoints]
 
 """
 DistilBERT Model + Lightning
 """
-class DistilBERT(pl.LightningModule):
+class DBase(pl.LightningModule):
     def __init__(self, params):
-        super(DistilBERT, self).__init__()
+        super(DBase, self).__init__()
         """Setting Up Hyperparameters from YAML file"""
         self.params1 = params[1]['model']
         self.model_name = self.params1["model_name"]
@@ -95,7 +97,7 @@ class DistilBERT(pl.LightningModule):
         acc = metric(preds.cpu(), labels.cpu())
         self.log("Val Loss", loss, prog_bar=True, on_epoch=True)
         self.log("Val Accuracy", acc, prog_bar=True, on_epoch=True)
-        return dict(loss=loss, train_acc=acc)
+        return dict(loss=loss, val_acc=acc)
 
     def test_step(self, batch, batch_idx):
 
@@ -105,7 +107,6 @@ class DistilBERT(pl.LightningModule):
 
         outputs = self.model(input_ids=input_ids,
                              attention_mask=attention_mask)
-
         preds = []
         for i in range(len(outputs.logits)):
             label_result = outputs.logits[i]
@@ -115,7 +116,7 @@ class DistilBERT(pl.LightningModule):
                 preds.append(1)
 
         preds = torch.tensor(preds)
-        return [preds.cpu(), labels.cpu()]
+        return [preds.cpu(), labels.cpu()]  # return predictions & labels for metrics utils
     
     def predict_step(self, batch, batch_idx):
 
@@ -125,7 +126,6 @@ class DistilBERT(pl.LightningModule):
         
         outputs = self.model(input_ids=input_ids,
                              attention_mask=attention_mask)
-
         preds = []
         for i in range(len(outputs.logits)):
             label_result = outputs.logits[i]
