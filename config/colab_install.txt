@@ -4,3 +4,4 @@ transformers
 h5py
 gast
 mlflow
+joblib
