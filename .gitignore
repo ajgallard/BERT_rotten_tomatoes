@@ -3,3 +3,5 @@ data/rotten_tomatoes.csv
 .idea
 .ipynb_checkpoints
 __pycache__
+mlruns
+lightning_logs
